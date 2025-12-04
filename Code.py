@@ -160,13 +160,13 @@ tanggal_unproses_training = []
 tanggal_unproses_validasi = []
 tanggal_unproses_tes = []
 
-SEQ_LENGTH = 14
+seq_len = 14
 n_future = 1
 
 for j in range(len(companies)):  
     tanggal_unproses = []  
     
-    for i in range(SEQ_LENGTH, len(indikator_data[j]) - n_future + 1):
+    for i in range(seq_len, len(indikator_data[j]) - n_future + 1):
         
         tanggal_str = list_tanggal[j][i + n_future - 1, 0]
 
@@ -231,13 +231,13 @@ y2_train_all, y2_val_all, y2_test_all = [], [], []
 y3_train_all, y3_val_all, y3_test_all = [], [], []
 y4_train_all, y4_val_all, y4_test_all = [], [], []
 
-SEQ_LENGTH = 14
+seq_len = 14
 n_future = 1
 for company, data in scaled_data.items():
     
     X_company, y1_company, y2_company, y3_company, y4_company= [], [], [], [], []
-    for i in range(SEQ_LENGTH , len(data) - n_future +1):
-        X_company.append(data[i - SEQ_LENGTH:i, 0:data.shape[1]])
+    for i in range(seq_len , len(data) - n_future +1):
+        X_company.append(data[i - seq_len:i, 0:data.shape[1]])
         y1_company.append(data[i + n_future - 1:i + n_future, 0])
         y2_company.append(data[i + n_future - 1:i + n_future, 1])
         y3_company.append(data[i + n_future - 1:i + n_future, 2])
@@ -249,7 +249,7 @@ for company, data in scaled_data.items():
     y4_company = np.array(y4_company)
     
     company_id = onehot_encoder.transform([[company]])
-    company_id_repeated = np.repeat(company_id, SEQ_LENGTH, axis=0)
+    company_id_repeated = np.repeat(company_id, seq_len, axis=0)
     
     X_company_combined = []
     for seq in X_company:
@@ -418,9 +418,9 @@ for h in range (len(companies)):
         scaled_data_processed = normalizer.fit_transform_all(company, data_processed_indikator)
 
         company_id_after = onehot_encoder.transform([[company]])
-        company_id_after_repeated = np.repeat(company_id_after, SEQ_LENGTH, axis=0)
+        company_id_after_repeated = np.repeat(company_id_after, seq_len, axis=0)
 
-        X_company_after = scaled_data_processed[-SEQ_LENGTH:]
+        X_company_after = scaled_data_processed[-seq_len:]
     
         X_company_combined_after = []
         for seq in X_company_after:
